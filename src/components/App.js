@@ -20,7 +20,7 @@ function App() {
     });
   }, []);
 
-  return <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />;
+  return <>{init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing..."}</>;
 }
 
 export default App;
