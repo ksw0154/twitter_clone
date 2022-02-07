@@ -4,10 +4,8 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -21,3 +19,4 @@ firebase.initializeApp(firebaseConfig);
 
 export const firebaseInstance = firebase;
 export const authService = firebase.auth();
+export const dbService = firebase.firestore();
