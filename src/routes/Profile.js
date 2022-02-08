@@ -1,26 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { authService, dbService } from "../fbase";
+import { authService } from "../fbase";
 
-const Profile = ({ userObj }) => {
+const Profile = ({ userObj, refreshUser }) => {
   let history = useHistory();
+  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
 
   const onLogOutClick = () => {
     authService.signOut();
     history.push("/");
   };
 
-  const getMyTweets = async () => {
-    const tweets = await dbService.collection("tweets").where("creatorId", "==", userObj.uid).get();
-    console.log(tweets.docs.map((doc) => doc.data()));
+  const onChange = (event) => {
+    const newName = event.target.value;
+    setNewDisplayName(newName);
   };
 
-  useEffect(() => {
-    getMyTweets();
-  });
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (userObj.displayName !== newDisplayName) {
+      await userObj.updateProfile({
+        displayName: newDisplayName,
+      });
+      refreshUser();
+    }
+  };
 
   return (
     <>
+      <form onSubmit={onSubmit}>
+        <input type="text" placeholder="Display name" onChange={onChange} value={newDisplayName} />
+        <input type="submit" value="Update Profile" />
+      </form>
       <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
